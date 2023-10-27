@@ -33,6 +33,12 @@
 #include <stdio.h>
 #include <string.h>
 
+// ssd1306 on second core
+const uint8_t num_chars_per_disp[] = { 7, 7, 7, 5 };
+const uint8_t *fonts[4] = { acme_font, bubblesstandard_font, crackers_font, BMSPA_font };
+
+#define SLEEPTIME 25
+
 CommunicationBackend **backends = nullptr;
 size_t backend_count;
 KeyboardMode *current_kb_mode = nullptr;
@@ -163,12 +169,6 @@ void loop() {
 /* Nunchuk code runs on the second core */
 // NunchukInput *nunchuk = nullptr;
 
-// ssd1306 on second core
-const uint8_t num_chars_per_disp[] = { 7, 7, 7, 5 };
-const uint8_t *fonts[4] = { acme_font, bubblesstandard_font, crackers_font, BMSPA_font };
-
-#define SLEEPTIME 25
-
 void setup1() {
     // while (backends == nullptr) {
     //     tight_loop_contents();
@@ -254,8 +254,8 @@ void loop1() {
             }
         }
 
-        // ssd1306_bmp_show_image(&disp, image_data, image_size);
-        // ssd1306_show(&disp);
-        // sleep_ms(2000);
+        ssd1306_bmp_show_image(&disp, image_data, image_size);
+        ssd1306_show(&disp);
+        sleep_ms(2000);
     }
 }
